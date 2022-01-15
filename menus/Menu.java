@@ -26,6 +26,41 @@ public class Menu {
 		showMainMenu();
 	}
 
+	private void loadData() {
+		AppController app = new AppController();
+		ConsultantsList x = app.read();
+		if (x != null) {
+			practice.setConsultantList(x.getConsultantsList());
+			System.out.println("Data loaded!");
+		}
+		
+	}
+	private void setupData() {
+		// testing and setup if file with data is missing random names
+			Consultant c1 = new Consultant(new Name("John", "Kowalski"), "1", "0700234123", null, "Cardiac Surgeon");
+			Consultant c2 = new Consultant(new Name("Eddie", "Van Halen"), "2", "070234433", null, "Neurosurgeon");
+			Consultant c3 = new Consultant(new Name("Rory", "Gallgher"), "3", "0702345623", null, "Orthopaedist");
+
+			Patient p1 = new Patient(new Name("John", "Doe"), "12", "086234238", null, "Cancer", SeverityOptions.LOW);
+			Patient p2 = new Patient(new Name("Kiki", "Williams"), "13", "0853243328", null, "Broken arm", SeverityOptions.MEDIUM);
+			Patient p3 = new Patient(new Name("Iga", "Swiatek"), "14", "086111238", null, "twisted ankle", SeverityOptions.LOW);
+			Patient p4 = new Patient(new Name("Michael", "Jordan"), "15", "083333328", null, "Headache", SeverityOptions.MEDIUM);
+			c1.add(p1);
+			c3.add(p2);
+			c3.add(p3);
+			c2.add(p4);
+			p1.add(new Visit(now, "Still sick"));
+			p1.add(new Visit(now, "Getting better"));
+			p2.add(new Visit(now, "Yes it is broken"));
+			p3.add(new Visit(now,"Bandaging the leg"));
+			p4.add(new Visit(now,"Head tomography"));
+
+			practice.add(c1);
+			practice.add(c2);
+			practice.add(c3);
+			
+		}
+		
 	private void showMainMenu() {
 	// implementation of menu
 		try {
@@ -79,10 +114,11 @@ public class Menu {
 				break;
 			case LoadInfo:
 				System.out.println("Load information from a file");
-
+				loadData();
 				break;
 			case Quit:
 				System.out.println("Thank you, have a nice day");
+				practice.saveConsultants();
 				System.exit(0);
 			}
 
